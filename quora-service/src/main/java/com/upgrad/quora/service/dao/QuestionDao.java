@@ -5,6 +5,7 @@ import com.upgrad.quora.service.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -70,6 +71,19 @@ public class QuestionDao {
     public List<QuestionEntity> getAllQuestionsByUser(UserEntity user) {
         return entityManager.createNamedQuery("questionByUser",QuestionEntity.class).setParameter("user",user).getResultList();
     }
+    /**
+     * Method to get the QuestionEntity by uuid
+     *
+     * @param uuid
+     * @return QuestionEntity
+     */
 
+    public QuestionEntity getQuestionByuuId(String  uuid) {
+        try {
+            return entityManager.createNamedQuery("questionByUuid", QuestionEntity.class).setParameter("uuid", uuid).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
 
 }

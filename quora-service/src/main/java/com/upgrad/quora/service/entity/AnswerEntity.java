@@ -3,10 +3,13 @@ package com.upgrad.quora.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name= "answer")
+@NamedQueries({
+        @NamedQuery(name = "answerByUuid", query = "select u from AnswerEntity u where u.uuid = :uuid")
+})
 public class AnswerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +24,7 @@ public class AnswerEntity implements Serializable {
     private String ans;
 
     @Column(name="date")
-    @Size(max=6)
-    private LocalTime date;
+    private ZonedDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -56,11 +58,11 @@ public class AnswerEntity implements Serializable {
         this.ans = ans;
     }
 
-    public LocalTime getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalTime date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

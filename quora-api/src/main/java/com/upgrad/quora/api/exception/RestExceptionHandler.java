@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
 /**
  * This class gives information to the controller class what messeges to be displayed  when exception thrown by service class
  */
@@ -70,6 +71,30 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exe , WebRequest request){
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),HttpStatus.FORBIDDEN);
+    }
+
+
+    /**
+     * Handler for InvalidQuestionException
+     * @param exception
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(InvalidQuestionException.class)
+    public ResponseEntity<ErrorResponse> invalidQuestionException(InvalidQuestionException exception, WebRequest request)  {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exception.getCode()).
+                message(exception.getErrorMessage()), HttpStatus.NOT_FOUND);
+    }
+    /**
+     * Handler for AnswerNotFoundException
+     * @param exception
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(AnswerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> answerNotFoundException(AnswerNotFoundException exe , WebRequest request){
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),HttpStatus.NOT_FOUND);
     }
